@@ -11,7 +11,7 @@ Version: February 7th 2016
 -------------------------------------------------------
 """
 
-def SupplyChainQueue():
+class SupplyChainQueue():
     
     def __init__(self):
         """
@@ -25,7 +25,7 @@ def SupplyChainQueue():
         self.data = [None, None]
         return
     
-    def PushOrder(self, numberOfCases):
+    def PushOrder(self, numberOfCasesToOrder):
         """
         -------------------------------------------------------
         Places an order/delivery into the supply chain queue.
@@ -38,7 +38,7 @@ def SupplyChainQueue():
         """
         orderSuccessfullyPlaced = False
         
-        if self.data[1] != None:
+        if self.data[1] == None:
             self.data[1] = numberOfCasesToOrder
             orderSuccessfullyPlaced = True
             
