@@ -45,7 +45,7 @@ class Customer:
         -------------------------------------------------------
         Calculates the amount of stock to order from the retailer.
         -------------------------------------------------------
-        Preconditions: weekNum - the current week of gameplay.
+        Preconditions: weekNum - the current week of game-play.
         Postconditions:
             The customer orders 4 cases on weeks 1-5, and 8 cases 
             for all other weeks. 

@@ -3,17 +3,18 @@
 This file contains and defines the SupplyChainQueue class. 
 The SupplyChainQueue consists of a two element list. Element
 0 is the oldest order/delivery in the queue, and element 1
-is the newest order/delivery in the queue.
+is the second oldest order/delivery in the queue,ect. The
+queue length is limited by the queueLength parameter.
 -------------------------------------------------------
 Author:  Tom LaMantia
 Email:   tom@lamantia.mail.utoronto.ca
-Version: February 7th 2016
+Version: February 14th 2016
 -------------------------------------------------------
 """
 
 class SupplyChainQueue():
     
-    def __init__(self):
+    def __init__(self, queueLength):
         """
         -------------------------------------------------------
         Constructor for the SupplyChainQueue class.
@@ -22,7 +23,8 @@ class SupplyChainQueue():
         Postconditions: Initializes an empty supply chain queue.
         -------------------------------------------------------
         """
-        self.data = [None, None]
+        self.queueLength = queueLength
+        self.data = []
         return
     
     def PushOrder(self, numberOfCasesToOrder):
@@ -38,11 +40,25 @@ class SupplyChainQueue():
         """
         orderSuccessfullyPlaced = False
         
-        if self.data[1] == None:
-            self.data[1] = numberOfCasesToOrder
+        if len(self.data) < self.queueLength:
+            self.data.append(numberOfCasesToOrder)
             orderSuccessfullyPlaced = True
             
         return orderSuccessfullyPlaced
+    
+    def AdvanceQueue(self):
+        """
+        -------------------------------------------------------
+        This utility function advances the queue. This mechanism
+        drives the delay loop.
+        -------------------------------------------------------
+        Preconditions: None.
+        Postconditions: The item at index [1] (second oldest) is moved
+            to index [0], item at index [2] is moved to index [1], etc...
+        -------------------------------------------------------
+        """
+        self.data.pop(0)
+        return
     
     def TakeDelivery(self):
         """
@@ -55,23 +71,20 @@ class SupplyChainQueue():
         """
         if self.data[0] != None:
             quantityDelivered = self.data[0]
-            self.data[0] = None
+            self.AdvanceQueue()
         else:
             quantityDelivered = 0
         
         return quantityDelivered
     
-    def AdvanceQueue(self):
+    def PrettyPrint(self):
         """
         -------------------------------------------------------
-        This utility function advances the queue. This mechanism
-        drives the delay loop.
+        Pretty prints the queue.
         -------------------------------------------------------
         Preconditions: None.
-        Postconditions: The item at index [1] (newest) is moved
-            to index [0], and becomes the oldest item.
+        Postconditions: Queue state is printed to the Python console.
         -------------------------------------------------------
         """
-        self.data[0] = self.data[1]
-        self.data[1] = None
+        print(self.data)
         return

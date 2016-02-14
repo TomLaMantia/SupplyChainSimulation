@@ -122,7 +122,7 @@ class Retailer:
         #The steps for taking a turn are as follows:
         
         #RECEIVE NEW DELIVERY FROM WHOLESALER
-        ReceiveOrderFromWholesaler()
+        ReceiveOrderFromWholesaler()    #This also advances the queue!
         
         #RECEIVE NEW ORDR FROM CUSTOMER
         self.numCasesOnOrderByCustomer += self.customer.CalculateOrder()
