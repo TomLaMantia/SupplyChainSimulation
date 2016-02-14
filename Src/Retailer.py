@@ -9,6 +9,7 @@ Version: February 7th 2016
 """
 
 from SupplyChainQueue import SupplyChainQueue
+from Customer import Customer
 
 class Retailer:
     
@@ -27,28 +28,13 @@ class Retailer:
             Initializes the retailer object in its initial state.
         -------------------------------------------------------
         """
+        self.customer = Customer()
         self.currentStock =  initialStock
         self.numCasesOnOrderByCustomer = 0
         self.currentBackorder = 0
         self.outGoingOrdersQueue = outGoingOrdersQueue
         self.incomingDeliveriesQueue = incomingDeliveriesQueue
         self.costsIncurred = 0
-        return
-    
-    def TakeTurn(self):
-        
-        #The steps for taking a turn are as follows:
-        
-        #DELIVERY IN
-        
-        #ORDER IN
-        
-        #PREPARE DELIVERY
-        
-        #PLACE ORDER
-        
-    
-        
         return
     
     def ReceiveCustomerOrder(self, numberOfCases):
@@ -82,8 +68,18 @@ class Retailer:
         self.outGoingOrdersQueue.PushOrder(5)
         return
     
-    def receiveOrderFromWholesaler(self):
-        
+    def ReceiveOrderFromWholesaler(self):
+        """
+        -------------------------------------------------------
+        Receives an order to the wholesaler.
+        -------------------------------------------------------
+        Preconditions: 
+            None
+        Postconditions:
+            Updates the current stock based on the incoming
+            deliveries queue.
+        -------------------------------------------------------
+        """
         quantityReceived = self.incomingDeliveriesQueue.TakeDelivery()
         
         if quantityReceived > 0:
@@ -94,14 +90,16 @@ class Retailer:
     def DeliverBeer(self):
         """
         -------------------------------------------------------
-        Places an order to the wholesaler. This needs to be determined
-        by an appropriate helper function!
+        Calculates how much beer to deliver to the customer. The
+        current stock and number of cases currently on order by the
+        customer are updated from within this function.
         -------------------------------------------------------
         Preconditions: 
             None
         Postconditions:
-            Places the order to the customer. Note: the advancement
-            of the queues is handled by the main program.
+            Returns deliveryQuantitiy - the number of cases to be delivered
+            to the customer. numCasesOnOrderByCustomer, currentStock are
+            updated to reflect this delivery quantity. 
         -------------------------------------------------------
         """
         deliveryQuantity = 0
@@ -118,5 +116,23 @@ class Retailer:
             self.numCasesOnOrderByCustomer -= deliveryQuantity
 
         return deliveryQuantity
+    
+    def TakeTurn(self):
+        
+        #The steps for taking a turn are as follows:
+        
+        #RECEIVE NEW DELIVERY FROM WHOLESALER
+        ReceiveOrderFromWholesaler()
+        
+        #RECEIVE NEW ORDR FROM CUSTOMER
+        self.numCasesOnOrderByCustomer += self.customer.CalculateOrder()
+        
+        #PREPARE DELIVERY
+        self.customer.RecieveFromRetailer(self.DeliverBeer())
+        
+        #PLACE ORDER
+        self.PlaceOrderToWholesaler()
+        
+        return
     
     
