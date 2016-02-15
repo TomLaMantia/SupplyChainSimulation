@@ -19,8 +19,8 @@ class Retailer(SupplyChainActor):
         -------------------------------------------------------
         Constructor for the Retailer class.
         -------------------------------------------------------
-        Preconditions: 
-            None
+        Preconditions: incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue - 
+                the supply chain queues. Note: outgoingDeliveriesQueue and incomingOrdersQueue should be NONE.
         Postconditions:
             Initializes the retailer object in its initial state
             by calling parent constructor and setting the
@@ -29,9 +29,7 @@ class Retailer(SupplyChainActor):
         """
         super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)
         self.customer = Customer()
-        self.incomingOrdersQueue = None
-        self.outgoingDeliveriesQueue = None
-        
+
         return
     
     def ReceiveIncomingOrderFromCustomer(self, weekNum):

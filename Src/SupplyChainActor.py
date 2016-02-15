@@ -71,7 +71,7 @@ class SupplyChainActor:
         -------------------------------------------------------
         """
         #This is a temp value of 5!!!!!!!! Will choose dynamically later!
-        self.outgoingOrdersQueue.PushEnvelope(5)
+        self.outgoingOrdersQueue.PushEnvelope(8)
         return
     
     def ReceiveIncomingDelivery(self):

@@ -17,10 +17,12 @@ class Wholesaler(SupplyChainActor):
         -------------------------------------------------------
         Constructor for the Wholesaler class.
         -------------------------------------------------------
-        Preconditions: 
-            
+        Preconditions: incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue - 
+                the supply chain queues.
         Postconditions:
-            Initializes the Wholesaler object in its initial state.
+            Initializes the Wholesaler object in its initial state
+            by calling parent constructor and setting the
+            retailer's customer.
         -------------------------------------------------------
         """
         super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)
