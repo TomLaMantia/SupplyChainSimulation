@@ -12,23 +12,19 @@ from SupplyChainActor import SupplyChainActor
 
 class Distributor(SupplyChainActor):
     
-    def __init__(self, initialStock, outgoingOrdersToFactoryQueue , incomingDeliveriesFromFactoryQueue,
-                 outogingOrdersToWholesalerQueue, incomingOrdersFromWholesalerQueue):
+    def __init__(self, incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue):
         """
         -------------------------------------------------------
         Constructor for the Distributor class.
         -------------------------------------------------------
-        Preconditions: 
-            
+        Preconditions: incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue - 
+                the supply chain queues.
         Postconditions:
-            Initializes the Distributor object in its initial state.
+            Initializes the Distributor object in its initial state
+            by calling parent constructor.
         -------------------------------------------------------
         """
-        self.numberOfCasesOnOrderByWholesaler = 0
-        self.outgoingOrdersToFactoryQueue  = outgoingOrdersToFactoryQueue 
-        self.incomingDeliveriesFromFactoryQueue = incomingDeliveriesFromFactoryQueue
-        self.outogingOrdersToWholesalerQueue = outogingOrdersToWholesalerQueue
-        self.incomingOrdersFromWholesalerQueue = incomingOrdersFromWholesalerQueue
+        super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)
         return
     
     
