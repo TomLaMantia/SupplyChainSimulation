@@ -18,20 +18,20 @@ from Retailer import Retailer
 
 
   
-q = SupplyChainQueue(5)
-for i in range(0,5):
-    q.PushOrder(i)
-    q.PrettyPrint()
-
-print("----")
-for i in range(0,5):
-    print(q.TakeDelivery())
-    q.PrettyPrint()
-
-print("----")
-for i in range(5,10):
-    q.PushOrder(i)
-    q.PrettyPrint()
+# q = SupplyChainQueue(5)
+# for i in range(0,5):
+#     q.PushOrder(i)
+#     q.PrettyPrint()
+# 
+# print("----")
+# for i in range(0,5):
+#     print(q.TakeDelivery())
+#     q.PrettyPrint()
+# 
+# print("----")
+# for i in range(5,10):
+#     q.PushOrder(i)
+#     q.PrettyPrint()
 
 
 

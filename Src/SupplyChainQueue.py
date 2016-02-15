@@ -3,7 +3,7 @@
 This file contains and defines the SupplyChainQueue class. 
 The SupplyChainQueue consists of a two element list. Element
 0 is the oldest order/delivery in the queue, and element 1
-is the second oldest order/delivery in the queue,ect. The
+is the second oldest order/delivery in the queue, etc. The
 queue length is limited by the queueLength parameter.
 -------------------------------------------------------
 Author:  Tom LaMantia
@@ -12,9 +12,11 @@ Version: February 14th 2016
 -------------------------------------------------------
 """
 
+from Settings import *
+
 class SupplyChainQueue():
     
-    def __init__(self, queueLength):
+    def __init__(self):
         """
         -------------------------------------------------------
         Constructor for the SupplyChainQueue class.
@@ -23,11 +25,11 @@ class SupplyChainQueue():
         Postconditions: Initializes an empty supply chain queue.
         -------------------------------------------------------
         """
-        self.queueLength = queueLength
+        self.queueLength = QUEUE_DELAY_WEEKS
         self.data = []
         return
     
-    def PushOrder(self, numberOfCasesToOrder):
+    def PushEnvelope(self, numberOfCasesToOrder):
         """
         -------------------------------------------------------
         Places an order/delivery into the supply chain queue.
@@ -60,14 +62,14 @@ class SupplyChainQueue():
         self.data.pop(0)
         return
     
-    def TakeDelivery(self):
+    def PopEnvelope(self):
         """
         -------------------------------------------------------
         Returns the beer order in the queue.
         -------------------------------------------------------
         Preconditions: None.
         Postconditions: Returns the number of cases of beer ordered.
-
+ 
         This method also advances the queue!
         -------------------------------------------------------
         """
@@ -76,7 +78,7 @@ class SupplyChainQueue():
             self.AdvanceQueue()
         else:
             quantityDelivered = 0
-        
+         
         return quantityDelivered
     
     def PrettyPrint(self):

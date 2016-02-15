@@ -8,9 +8,11 @@ Version: February 7th 2016
 -------------------------------------------------------
 """
 
-class Factory:
+from SupplyChainActor import SupplyChainActor
+
+class Factory(SupplyChainActor):
     
-    def __init__(self, initialStock, outgoingProduction, incomingDeliveriesQueue):
+    def __init__(self):
         
         return
     
@@ -22,13 +24,6 @@ class Factory:
         
         return
     
-    def DeliverBeer(self):
-        
-        return 
-    
-    def CalcCostForTurn(self):
-        
-        return
     
     def TakeTurn(self, weekNum):
         

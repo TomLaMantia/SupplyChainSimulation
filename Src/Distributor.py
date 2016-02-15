@@ -8,9 +8,12 @@ Version: February 7th 2016
 -------------------------------------------------------
 """
 
-class Distributor:
+from SupplyChainActor import SupplyChainActor
+
+class Distributor(SupplyChainActor):
     
-    def __init__(self, initialStock, outgoingOrdersQueue, incomingDeliveriesQueue):
+    def __init__(self, initialStock, outgoingOrdersToFactoryQueue , incomingDeliveriesFromFactoryQueue,
+                 outogingOrdersToWholesalerQueue, incomingOrdersFromWholesalerQueue):
         """
         -------------------------------------------------------
         Constructor for the Distributor class.
@@ -21,11 +24,11 @@ class Distributor:
             Initializes the Distributor object in its initial state.
         -------------------------------------------------------
         """
-        self.currentStock = initialStock
         self.numberOfCasesOnOrderByWholesaler = 0
-        self.outgoingOrdersQueue = outgoingOrdersQueue
-        self.incomingDeliveriesQueue = incomingDeliveriesQueue
-        self.costsIncurred = 0
+        self.outgoingOrdersToFactoryQueue  = outgoingOrdersToFactoryQueue 
+        self.incomingDeliveriesFromFactoryQueue = incomingDeliveriesFromFactoryQueue
+        self.outogingOrdersToWholesalerQueue = outogingOrdersToWholesalerQueue
+        self.incomingOrdersFromWholesalerQueue = incomingOrdersFromWholesalerQueue
         return
     
     def PlaceOrderToFactory(self):
@@ -33,14 +36,6 @@ class Distributor:
         return
     
     def ReceiveOrderFromFactory(self):
-        
-        return
-    
-    def DeliverBeer(self):
-        
-        return
-    
-    def CalcCostsForTurn(self):
         
         return
     
