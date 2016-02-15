@@ -66,10 +66,12 @@ class SupplyChainQueue():
         Returns the beer order in the queue.
         -------------------------------------------------------
         Preconditions: None.
-        Postconditions: Returns the number of cases of beer ordered. 
+        Postconditions: Returns the number of cases of beer ordered.
+
+        This method also advances the queue!
         -------------------------------------------------------
         """
-        if self.data[0] != None:
+        if len(self.data) >= 1:
             quantityDelivered = self.data[0]
             self.AdvanceQueue()
         else:

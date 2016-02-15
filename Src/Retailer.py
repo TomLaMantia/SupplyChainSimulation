@@ -10,17 +10,18 @@ Version: February 7th 2016
 
 from SupplyChainQueue import SupplyChainQueue
 from Customer import Customer
+from Settings import *
 
 class Retailer:
     
-    def __init__(self, initialStock, outGoingOrdersQueue, incomingDeliveriesQueue):
+    def __init__(self, initialStock, outgoingOrdersQueue, incomingDeliveriesQueue):
         """
         -------------------------------------------------------
         Constructor for the Retailer class.
         -------------------------------------------------------
         Preconditions: 
             initialStock - an integer representing the current stock
-            outGoingOrdersQueue - a queue object for the outgoing orders to the wholesaler.
+            outgoingOrdersQueue - a queue object for the outgoing orders to the wholesaler.
                                 This queue is SHARED with the wholesaler (handled by Main)!
             incomingDeliveriesQueue - a queue object for the incoming deliveries from the wholesaler.
                                 This queue is SHARED with the wholesaler (handled by Main)!
@@ -31,25 +32,9 @@ class Retailer:
         self.customer = Customer()
         self.currentStock =  initialStock
         self.numCasesOnOrderByCustomer = 0
-        self.currentBackorder = 0
-        self.outGoingOrdersQueue = outGoingOrdersQueue
+        self.outgoingOrdersQueue = outgoingOrdersQueue
         self.incomingDeliveriesQueue = incomingDeliveriesQueue
         self.costsIncurred = 0
-        return
-    
-    def ReceiveCustomerOrder(self, numberOfCases):
-        """
-        -------------------------------------------------------
-        Receives an order from the customer
-        -------------------------------------------------------
-        Preconditions: 
-            numberOfCases - the number of cases requested by the
-                customer in a given week.
-        Postconditions:
-            Updates the current orders accordingly.
-        -------------------------------------------------------
-        """
-        self.numCasesOnOrderByCustomer += numberOfCases
         return
     
     def PlaceOrderToWholesaler(self):
@@ -65,7 +50,8 @@ class Retailer:
             of the queues is handled by the main program.
         -------------------------------------------------------
         """
-        self.outGoingOrdersQueue.PushOrder(5)
+        #This is a temp value of 5!!!!!!!! Will choose dynamically later!
+        self.outgoingOrdersQueue.PushOrder(5)
         return
     
     def ReceiveOrderFromWholesaler(self):
@@ -105,7 +91,7 @@ class Retailer:
         deliveryQuantity = 0
         
          #If we can fill the customer's order, we must do it.
-        if currentStock > 0 and self.currentStock >= self.numCasesOnOrderByCustomer:
+        if self.currentStock >= self.numCasesOnOrderByCustomer:
             deliveryQuantity = self.numCasesOnOrderByCustomer
             self.currentStock -= deliveryQuantity
             self.numCasesOnOrderByCustomer -= deliveryQuantity
@@ -117,7 +103,29 @@ class Retailer:
 
         return deliveryQuantity
     
-    def TakeTurn(self):
+    def CalcCostForTurn(self):
+        """
+        -------------------------------------------------------
+        This function calculates the total costs incurred for the
+        current turn. 
+        -------------------------------------------------------
+        Preconditions: This program must be called LAST in the turn
+            sequence to account for orders taken and deliveries.
+        Postconditions:
+            Returns costsThisTurn - the total cost incurred during
+            this turn.
+        -------------------------------------------------------
+        """
+        costsThisTurn = 0
+        
+        inventoryStorageCost = self.currentStock * STORAGE_COST_PER_UNIT
+        backorderPenaltyCost = self.numCasesOnOrderByCustomer * BACKORDER_PENALTY_COST_PER_UNIT
+        
+        costsThisTurn = inventoryStorageCost + backorderPenaltyCost
+        
+        return costsThisTurn
+    
+    def TakeTurn(self, weekNum):
         
         #The steps for taking a turn are as follows:
         
@@ -125,7 +133,7 @@ class Retailer:
         ReceiveOrderFromWholesaler()    #This also advances the queue!
         
         #RECEIVE NEW ORDR FROM CUSTOMER
-        self.numCasesOnOrderByCustomer += self.customer.CalculateOrder()
+        self.numCasesOnOrderByCustomer += self.customer.CalculateOrder(weekNum)
         
         #PREPARE DELIVERY
         self.customer.RecieveFromRetailer(self.DeliverBeer())
@@ -133,6 +141,7 @@ class Retailer:
         #PLACE ORDER
         self.PlaceOrderToWholesaler()
         
+        #UPDATE COSTS
+        self.costsIncurred += self.CalcCostForTurn(weekNum)
+        
         return
-    
-    
