@@ -9,18 +9,29 @@ product at the end of the supply chain system.
 -------------------------------------------------------
 Author:  Tom LaMantia
 Email:   tom@lamantia.mail.utoronto.ca
-Version: February 7th 2016
+Version: February 14th 2016
 -------------------------------------------------------
 """
 
 from SupplyChainQueue import SupplyChainQueue
-from Wholesaler import Wholesaler
 from Retailer import Retailer
- 
-# q = SupplyChainQueue()
-# q.PushOrder(10)
-# q.AdvanceQueue()
-# q.PushOrder(30)
-# print(q.TakeDelivery())
-# q.AdvanceQueue()
-# print(q.TakeDelivery())
+
+
+  
+q = SupplyChainQueue(5)
+for i in range(0,5):
+    q.PushOrder(i)
+    q.PrettyPrint()
+
+print("----")
+for i in range(0,5):
+    print(q.TakeDelivery())
+    q.PrettyPrint()
+
+print("----")
+for i in range(5,10):
+    q.PushOrder(i)
+    q.PrettyPrint()
+
+
+
