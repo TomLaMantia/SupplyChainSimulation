@@ -16,7 +16,11 @@ Version: February 14th 2016
 from SupplyChainQueue import SupplyChainQueue
 from Retailer import Retailer
 
-
+q1 = SupplyChainQueue()
+q2 = SupplyChainQueue()
+q3 = SupplyChainQueue()
+q4 = SupplyChainQueue()
+myRetailer = Retailer(q1, q2, q3, q4)
   
 # q = SupplyChainQueue(5)
 # for i in range(0,5):

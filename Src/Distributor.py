@@ -31,14 +31,24 @@ class Distributor(SupplyChainActor):
         self.incomingOrdersFromWholesalerQueue = incomingOrdersFromWholesalerQueue
         return
     
-    def PlaceOrderToFactory(self):
-        
-        return
     
-    def ReceiveOrderFromFactory(self):
+    def TakeTurn(self, weekNum):
         
-        return
-    
-    def TakeTurn(self):
+        #The steps for taking a turn are as follows:
+        
+        #RECEIVE NEW DELIVERY FROM FACTORY
+        self.ReceiveIncomingDelivery()    #This also advances the queue!
+        
+        #RECEIVE NEW ORDER FROM WHOLESALER
+        self.ReceiveIncomingOrders()     #This also advances the queue!
+        
+        #PREPARE DELIVERY
+        self.PlaceOutgoingDelivery(self.CalcBeerToDeliver())
+        
+        #PLACE ORDER
+        self.PlaceOutgoingOrder()
+        
+        #UPDATE COSTS
+        self.costsIncurred += self.CalcCostForTurn(weekNum)
         
         return

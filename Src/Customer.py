@@ -8,6 +8,8 @@ Version: February 14th 2016
 -------------------------------------------------------
 """
 
+from Settings import *
+
 class Customer:
     
     def __init__(self):
@@ -21,8 +23,8 @@ class Customer:
         -------------------------------------------------------
         """
         self.totalBeerReceived = 0
-        self.orderType1 = 4
-        self.orderType2 = 8
+        self.orderType1 = CUSTOMER_INITIAL_ORDERS
+        self.orderType2 = CUSTOMER_SUBSEQUENT_ORDERS
         return
     
     def RecieveFromRetailer(self, amountReceived):

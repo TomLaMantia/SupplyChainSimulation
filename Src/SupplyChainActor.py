@@ -9,12 +9,108 @@ Version: February 7th 2016
 """
 
 from Settings import *
+from SupplyChainQueue import SupplyChainQueue
 
 class SupplyChainActor:
     
-    def __init__(self):
+    def __init__(self, incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue):
+        """
+        -------------------------------------------------------
+        Constructor for the SupplyChainActor class. All other
+        supply chain actors (Retailer, Wholesaler, Distributor, Factory)
+        are derived from this class. 
+        -------------------------------------------------------
+        Preconditions:
+            incomingOrdersQueue - queue for incoming orders.
+            outgoingOrdersQueue - queue for outgoing orders.
+            incomingDeliveriesQueue - queue for incoming deliveries.
+            outgoingDeliveriesQueue - queue for outgoing deliveries.
+            
+        Postconditions:
+            Initializes the SupplyChainActor object in its initial state.
+        -------------------------------------------------------
+        """
         self.currentStock = INITIAL_STOCK
+        self.currentOrders = INITIAL_CURRENT_ORDERS
         self.costsIncurred = INITIAL_COST
+        
+        self.incomingOrdersQueue = incomingOrdersQueue
+        self.outgoingOrdersQueue = outgoingOrdersQueue
+        self.incomingDeliveriesQueue = incomingDeliveriesQueue
+        self.outgoingDeliveriesQueue = outgoingDeliveriesQueue
+        
+        return
+    
+    def PlaceOutgoingDelivery(self, amountToDeliver):
+        """
+        -------------------------------------------------------
+        Places a delivery to the actor one level higher in the supply
+        chain.
+        -------------------------------------------------------
+        Preconditions: 
+            None
+        Postconditions:
+            Places the delivery. Note: the advancement
+            of the queues is handled by the main program.
+        -------------------------------------------------------
+        """
+        self.outgoingDeliveriesQueue.PushEnvelope(amountToDeliver)
+        return
+    
+    def PlaceOutgoingOrder(self):
+        """
+        -------------------------------------------------------
+        Places an order to the actor one level lower in the supply
+        chain. This needs to be determined by an appropriate helper function!
+        -------------------------------------------------------
+        Preconditions: 
+            None
+        Postconditions:
+            Places the order. Note: the advancement
+            of the queues is handled by the main program.
+        -------------------------------------------------------
+        """
+        #This is a temp value of 5!!!!!!!! Will choose dynamically later!
+        self.outgoingOrdersQueue.PushEnvelope(5)
+        return
+    
+    def ReceiveIncomingDelivery(self):
+        """
+        -------------------------------------------------------
+        Receives a delivery from the actor one level lower in
+        the supply chain.
+        -------------------------------------------------------
+        Preconditions: 
+            None
+        Postconditions:
+            Updates the current stock based on the incoming
+            deliveries queue.
+        -------------------------------------------------------
+        """
+        quantityReceived = self.incomingDeliveriesQueue.PopEnvelope()
+        
+        if quantityReceived > 0:
+            self.currentStock += quantityReceived
+                
+        return
+    
+    def ReceiveIncomingOrders(self):
+        """
+        -------------------------------------------------------
+        Receives an incoming order from from the actor one level higher in
+        the supply chain.
+        -------------------------------------------------------
+        Preconditions: 
+            None
+        Postconditions:
+            Updates the current orders based on the incoming
+            deliveries queue.
+        -------------------------------------------------------
+        """
+        thisOrder = self.incomingOrdersQueue.PopEnvelope()
+        
+        if thisOrder > 0:
+            self.currentOrders += thisOrder
         return
     
     def CalcBeerToDeliver(self):

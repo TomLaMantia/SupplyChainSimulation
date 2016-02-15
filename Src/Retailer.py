@@ -8,68 +8,38 @@ Version: February 7th 2016
 -------------------------------------------------------
 """
 
-from SupplyChainQueue import SupplyChainQueue
 from Customer import Customer
 from SupplyChainActor import SupplyChainActor
+from SupplyChainQueue import SupplyChainQueue
 
 class Retailer(SupplyChainActor):
     
-    def __init__(self, outgoingOrdersToWholesalerQueue, incomingDeliveriesFromWholesalerQuueue):
+    def __init__(self, incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue):
         """
         -------------------------------------------------------
         Constructor for the Retailer class.
         -------------------------------------------------------
         Preconditions: 
-            initialStock - an integer representing the current stock
-            outgoingOrdersToWholesalerQueue - a queue object for the outgoing orders to the wholesaler.
-                                This queue is SHARED with the wholesaler (handled by Main)!
-            incomingDeliveriesFromWholesalerQuueue - a queue object for the incoming deliveries from the wholesaler.
-                                This queue is SHARED with the wholesaler (handled by Main)!
+            None
         Postconditions:
-            Initializes the retailer object in its initial state.
+            Initializes the retailer object in its initial state
+            by calling parent constructor and setting the
+            retailer's customer.
         -------------------------------------------------------
         """
-        super(Retailer, self).__init__()
+        super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)
         self.customer = Customer()
-        self.numCasesOnOrderByCustomer = 0
-        self.outgoingOrdersToWholesalerQueue = outgoingOrdersToWholesalerQueue
-        self.incomingDeliveriesFromWholesalerQuueue = incomingDeliveriesFromWholesalerQuueue
-        return
-    
-    def PlaceOrderToWholesaler(self):
-        """
-        -------------------------------------------------------
-        Places an order to the Wholesaler. This needs to be determined
-        by an appropriate helper function!
-        -------------------------------------------------------
-        Preconditions: 
-            None
-        Postconditions:
-            Places the order to the Wholesaler. Note: the advancement
-            of the queues is handled by the main program.
-        -------------------------------------------------------
-        """
-        #This is a temp value of 5!!!!!!!! Will choose dynamically later!
-        self.outgoingOrdersToWholesalerQueue.PushEnvelope(5)
-        return
-    
-    def ReceiveOrderFromWholesaler(self):
-        """
-        -------------------------------------------------------
-        Receives an order from the Wholesaler.
-        -------------------------------------------------------
-        Preconditions: 
-            None
-        Postconditions:
-            Updates the current stock based on the incoming
-            deliveries queue.
-        -------------------------------------------------------
-        """
-        quantityReceived = self.incomingDeliveriesFromWholesalerQuueue.PopEnvelope()
+        self.incomingOrdersQueue = None
+        self.outgoingDeliveriesQueue = None
         
-        if quantityReceived > 0:
-            self.currentStock += quantityReceived
-                
+        return
+    
+    def ReceiveIncomingOrderFromCustomer(self, weekNum):
+        self.numCasesOnOrderByCustomer += self.customer.CalculateOrder(weekNum)
+        return
+    
+    def ShipOutgoingDeliveryToCustomer(self):
+        self.customer.RecieveFromRetailer(self.CalcBeerToDeliver())
         return
     
     def TakeTurn(self, weekNum):
@@ -77,16 +47,16 @@ class Retailer(SupplyChainActor):
         #The steps for taking a turn are as follows:
         
         #RECEIVE NEW DELIVERY FROM WHOLESALER
-        self.ReceiveOrderFromWholesaler()    #This also advances the queue!
+        self.ReceiveIncomingDelivery()    #This also advances the queue!
         
-        #RECEIVE NEW ORDR FROM CUSTOMER
-        self.numCasesOnOrderByCustomer += self.customer.CalculateOrder(weekNum)
+        #RECEIVE NEW ORDER FROM CUSTOMER
+        self.ReceiveIncomingOrderFromCustomer(weekNum)
         
-        #PREPARE DELIVERY
-        self.customer.RecieveFromRetailer(self.CalcBeerToDeliver())
+        #CALCULATE AMOUNT TO BE SHIPPED, THEN SHIP IT
+        self.ShipOutgoingDeliveryToCustomer()
         
-        #PLACE ORDER
-        self.PlaceOrderToWholesaler()
+        #PLACE ORDER TO WHOLESALER
+        self.PlaceOutgoingOrder()
         
         #UPDATE COSTS
         self.costsIncurred += self.CalcCostForTurn(weekNum)
