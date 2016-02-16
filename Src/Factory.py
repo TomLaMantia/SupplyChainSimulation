@@ -14,13 +14,14 @@ from SupplyChainQueue import SupplyChainQueue
 
 class Factory(SupplyChainActor):
     
-    def __init__(self, incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue):
+    def __init__(self, incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue, productionDelayWeeks):
         """
         -------------------------------------------------------
         Constructor for the Factory class.
         -------------------------------------------------------
         Preconditions: incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue - 
                 the supply chain queues. Note: outgoingOrdersQueue and incomingDeliveriesQueue should be NONE.
+                productionDelayWeeks - an integer value indicating the nunber of weeks required to make a case of beer.
         Postconditions:
             Initializes the Factory object in its initial state
             by calling parent constructor and setting the
@@ -28,7 +29,7 @@ class Factory(SupplyChainActor):
         -------------------------------------------------------
         """
         super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)
-        self.BeerProductionDelayQueue = SupplyChainQueue()
+        self.BeerProductionDelayQueue = SupplyChainQueue(productionDelayWeeks)
         
         #We assume that the factory already has some runs in production. This is in the rules, and ensures initial stability.
         self.BeerProductionDelayQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)

@@ -16,16 +16,17 @@ from Settings import *
 
 class SupplyChainQueue():
     
-    def __init__(self):
+    def __init__(self, queueLength):
         """
         -------------------------------------------------------
         Constructor for the SupplyChainQueue class.
         -------------------------------------------------------
-        Preconditions: None
+        Preconditions: queueLength - the length of the queue. This
+                argument is used to inplement variable length delays.
         Postconditions: Initializes an empty supply chain queue.
         -------------------------------------------------------
         """
-        self.queueLength = QUEUE_DELAY_WEEKS
+        self.queueLength = queueLength
         self.data = []
         return
     

@@ -30,14 +30,14 @@ outgoingOrderQueue/B's incomingOrderQueue. Let "bottom queue"
 denote B's outgoingDeliveryQueue/A's incoming delivery queue. 
 -------------------------------------------------------
 """
-wholesalerRetailerTopQueue = SupplyChainQueue()
-wholesalerRetailerBottomQueue = SupplyChainQueue()
+wholesalerRetailerTopQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
+wholesalerRetailerBottomQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
 
-distributorWholesalerTopQueue = SupplyChainQueue()
-distributorWholesalerBottomQueue = SupplyChainQueue()
+distributorWholesalerTopQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
+distributorWholesalerBottomQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
 
-factoryDistributorTopQueue = SupplyChainQueue()
-factoryDistributorBottomQueue = SupplyChainQueue()
+factoryDistributorTopQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
+factoryDistributorBottomQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
 
 """
 -------------------------------------------------------
@@ -68,7 +68,7 @@ myWholesaler = Wholesaler(wholesalerRetailerTopQueue, distributorWholesalerTopQu
 myDistributor = Distributor(distributorWholesalerTopQueue, factoryDistributorTopQueue,
                             factoryDistributorBottomQueue, distributorWholesalerBottomQueue)
 
-myFactory = Factory(factoryDistributorTopQueue, None, None, factoryDistributorBottomQueue)
+myFactory = Factory(factoryDistributorTopQueue, None, None, factoryDistributorBottomQueue, QUEUE_DELAY_WEEKS)
 
 #Initialize Statistics object
 myStats = SupplyChainStatistics()
