@@ -58,3 +58,14 @@ class Customer:
         else:
             result = self.orderType2
         return result
+    
+    def GetBeerReceived(self):
+        """
+        -------------------------------------------------------
+        Returns the total beer received by the customer
+        -------------------------------------------------------
+        Preconditions: None.
+        Postconditions: Returns totalBeerReceived
+        -------------------------------------------------------
+        """
+        return self.totalBeerReceived

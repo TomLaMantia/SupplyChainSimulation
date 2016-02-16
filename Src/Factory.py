@@ -54,7 +54,7 @@ class Factory(SupplyChainActor):
         #The steps for taking a turn are as follows:
         
         #SOME PREVIOUS PRODUCTION RUNS FINISH BREWING.
-        FinishProduction()
+        self.FinishProduction()
         
         #RECEIVE NEW ORDER FROM DISTRIBUTOR
         self.ReceiveIncomingOrders()     #This also advances the queue!
@@ -63,9 +63,9 @@ class Factory(SupplyChainActor):
         self.PlaceOutgoingDelivery(self.CalcBeerToDeliver())
         
         #PRODUCE BEER
-        ProduceBeer()
+        self.ProduceBeer()
         
         #UPDATE COSTS
-        self.costsIncurred += self.CalcCostForTurn(weekNum)
+        self.costsIncurred += self.CalcCostForTurn()
         
         return

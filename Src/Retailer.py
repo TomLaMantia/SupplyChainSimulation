@@ -14,13 +14,15 @@ from SupplyChainQueue import SupplyChainQueue
 
 class Retailer(SupplyChainActor):
     
-    def __init__(self, incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue):
+    def __init__(self, incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue, theCustomer):
         """
         -------------------------------------------------------
         Constructor for the Retailer class.
         -------------------------------------------------------
         Preconditions: incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue - 
                 the supply chain queues. Note: outgoingDeliveriesQueue and incomingOrdersQueue should be NONE.
+                
+                theCustomer - a customer object.
         Postconditions:
             Initializes the retailer object in its initial state
             by calling parent constructor and setting the
@@ -28,12 +30,12 @@ class Retailer(SupplyChainActor):
         -------------------------------------------------------
         """
         super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)
-        self.customer = Customer()
+        self.customer = theCustomer
 
         return
     
     def ReceiveIncomingOrderFromCustomer(self, weekNum):
-        self.numCasesOnOrderByCustomer += self.customer.CalculateOrder(weekNum)
+        self.currentOrders += self.customer.CalculateOrder(weekNum)
         return
     
     def ShipOutgoingDeliveryToCustomer(self):
@@ -57,6 +59,6 @@ class Retailer(SupplyChainActor):
         self.PlaceOutgoingOrder()
         
         #UPDATE COSTS
-        self.costsIncurred += self.CalcCostForTurn(weekNum)
+        self.costsIncurred += self.CalcCostForTurn()
         
         return

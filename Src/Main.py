@@ -14,6 +14,7 @@ Version: February 14th 2016
 """
 
 from Settings import *
+from Customer import Customer
 from SupplyChainQueue import SupplyChainQueue
 from Retailer import Retailer
 from Wholesaler import Wholesaler
@@ -57,7 +58,8 @@ queues is essential.
 -------------------------------------------------------
 """
 
-myRetailer = Retailer(None, wholesalerRetailerTopQueue, wholesalerRetailerBottomQueue, None)
+theCustomer = Customer()
+myRetailer = Retailer(None, wholesalerRetailerTopQueue, wholesalerRetailerBottomQueue, None, theCustomer)
 
 myWholesaler = Wholesaler(wholesalerRetailerTopQueue, distributorWholesalerTopQueue,
                           distributorWholesalerBottomQueue, wholesalerRetailerBottomQueue)
@@ -67,9 +69,21 @@ myDistributor = Distributor(distributorWholesalerTopQueue, factoryDistributorTop
 
 myFactory = Factory(factoryDistributorTopQueue, None, None, factoryDistributorBottomQueue)
 
+"""
+-------------------------------------------------------
+Main game-play!
+-------------------------------------------------------
+"""
 
+for thisWeek in range(0, WEEKS_TO_PLAY):
+    
+    print("--- Week {0} ---".format(thisWeek))
+    myRetailer.TakeTurn(thisWeek)
+    myWholesaler.TakeTurn(thisWeek)
+    myDistributor.TakeTurn(thisWeek)
+    myFactory.TakeTurn(thisWeek)
 
-
+print(theCustomer.GetBeerReceived())
 
 
 

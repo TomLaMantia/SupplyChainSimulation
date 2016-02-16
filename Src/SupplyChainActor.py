@@ -124,22 +124,22 @@ class SupplyChainActor:
             None
         Postconditions:
             Returns deliveryQuantitiy - the number of cases to be delivered
-            to the customer. numCasesOnOrderByCustomer, currentStock are
+            to the customer. currentOrders, currentStock are
             updated to reflect this delivery quantity. 
         -------------------------------------------------------
         """
         deliveryQuantity = 0
         
          #If we can fill the customer's order, we must do it.
-        if self.currentStock >= self.numCasesOnOrderByCustomer:
-            deliveryQuantity = self.numCasesOnOrderByCustomer
+        if self.currentStock >= self.currentOrders:
+            deliveryQuantity = self.currentOrders
             self.currentStock -= deliveryQuantity
-            self.numCasesOnOrderByCustomer -= deliveryQuantity
+            self.currentOrders -= deliveryQuantity
         #If the current stock cannot cover the order, we must fill as much as we can, and back-order the rest.
-        elif self.currentStock >= 0 and self.currentStock < self.numCasesOnOrderByCustomer:
+        elif self.currentStock >= 0 and self.currentStock < self.currentOrders:
             deliveryQuantity = self.currentStock
             self.currentStock = 0
-            self.numCasesOnOrderByCustomer -= deliveryQuantity
+            self.currentOrders -= deliveryQuantity
 
         return deliveryQuantity
     
@@ -159,7 +159,7 @@ class SupplyChainActor:
         costsThisTurn = 0
         
         inventoryStorageCost = self.currentStock * STORAGE_COST_PER_UNIT
-        backorderPenaltyCost = self.numCasesOnOrderByCustomer * BACKORDER_PENALTY_COST_PER_UNIT
+        backorderPenaltyCost = self.currentOrders * BACKORDER_PENALTY_COST_PER_UNIT
         
         costsThisTurn = inventoryStorageCost + backorderPenaltyCost
         

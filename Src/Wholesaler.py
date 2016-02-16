@@ -44,6 +44,6 @@ class Wholesaler(SupplyChainActor):
         self.PlaceOutgoingOrder()
         
         #UPDATE COSTS
-        self.costsIncurred += self.CalcCostForTurn(weekNum)
+        self.costsIncurred += self.CalcCostForTurn()
         
         return
