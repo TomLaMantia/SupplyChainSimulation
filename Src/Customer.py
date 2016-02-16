@@ -62,7 +62,7 @@ class Customer:
     def GetBeerReceived(self):
         """
         -------------------------------------------------------
-        Returns the total beer received by the customer
+        Returns the total beer received by the customer.
         -------------------------------------------------------
         Preconditions: None.
         Postconditions: Returns totalBeerReceived

@@ -83,7 +83,11 @@ for thisWeek in range(0, WEEKS_TO_PLAY):
     myDistributor.TakeTurn(thisWeek)
     myFactory.TakeTurn(thisWeek)
 
-print(theCustomer.GetBeerReceived())
-
+print("--- Final Statistics ----")
+print("Beer received by customer: {0}".format(theCustomer.GetBeerReceived()))
+print("Retailer cost: {0}".format(myRetailer.GetCostIncurred()))
+print("Wholesaler cost: {0}".format(myWholesaler.GetCostIncurred()))
+print("Distributor cost: {0}".format(myDistributor.GetCostIncurred()))
+print("Factory cost: {0}".format(myFactory.GetCostIncurred()))
 
 

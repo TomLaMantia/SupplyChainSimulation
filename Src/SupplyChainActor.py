@@ -164,3 +164,14 @@ class SupplyChainActor:
         costsThisTurn = inventoryStorageCost + backorderPenaltyCost
         
         return costsThisTurn
+    
+    def GetCostIncurred(self):
+        """
+        -------------------------------------------------------
+        Returns the total costs incurred. 
+        -------------------------------------------------------
+        Preconditions: None.
+        Postconditions: Returns self.costsIncurred
+        -------------------------------------------------------
+        """
+        return self.costsIncurred
