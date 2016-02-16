@@ -39,6 +39,7 @@ class SupplyChainActor:
         self.incomingDeliveriesQueue = incomingDeliveriesQueue
         self.outgoingDeliveriesQueue = outgoingDeliveriesQueue
         
+        self.totalOrders = 0
         return
     
     def PlaceOutgoingDelivery(self, amountToDeliver):
@@ -72,6 +73,7 @@ class SupplyChainActor:
         """
         #This is a temp value of 5!!!!!!!! Will choose dynamically later!
         self.outgoingOrdersQueue.PushEnvelope(8)
+        self.totalOrders += 8
         return
     
     def ReceiveIncomingDelivery(self):
@@ -175,3 +177,14 @@ class SupplyChainActor:
         -------------------------------------------------------
         """
         return self.costsIncurred
+    
+    def GetTotalOrders(self):
+        """
+        -------------------------------------------------------
+        Returns the total orders made. 
+        -------------------------------------------------------
+        Preconditions: None.
+        Postconditions: Returns self.totalOrders
+        -------------------------------------------------------
+        """
+        return self.totalOrders

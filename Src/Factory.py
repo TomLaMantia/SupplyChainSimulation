@@ -38,6 +38,7 @@ class Factory(SupplyChainActor):
     def ProduceBeer(self):
         amountOfBeerToProduce = 8
         self.BeerProductionDelayQueue.PushEnvelope(amountOfBeerToProduce)
+        self.totalOrders += 8
         return
     
     def FinishProduction(self):
