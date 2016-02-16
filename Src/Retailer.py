@@ -35,10 +35,29 @@ class Retailer(SupplyChainActor):
         return
     
     def ReceiveIncomingOrderFromCustomer(self, weekNum):
+        """
+        -------------------------------------------------------
+        Receives an order from the customer.
+        -------------------------------------------------------
+        Preconditions: weekNum - the current week.
+        Postconditions:
+            Adds the customer's order to the current orders.
+        -------------------------------------------------------
+        """
         self.currentOrders += self.customer.CalculateOrder(weekNum)
         return
     
     def ShipOutgoingDeliveryToCustomer(self):
+        """
+        -------------------------------------------------------
+        Ships an order from the customer.
+        -------------------------------------------------------
+        Preconditions: None
+        Postconditions: Calculates the amount of beer to be delivered
+            based on the current stock. This is then added to the customer's
+            total beer received. 
+        -------------------------------------------------------
+        """
         self.customer.RecieveFromRetailer(self.CalcBeerToDeliver())
         return
     

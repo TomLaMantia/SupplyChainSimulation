@@ -20,6 +20,7 @@ from Retailer import Retailer
 from Wholesaler import Wholesaler
 from Distributor import Distributor
 from Factory import Factory
+from SupplyChainStatistics import SupplyChainStatistics
 
 """
 -------------------------------------------------------
@@ -69,6 +70,9 @@ myDistributor = Distributor(distributorWholesalerTopQueue, factoryDistributorTop
 
 myFactory = Factory(factoryDistributorTopQueue, None, None, factoryDistributorBottomQueue)
 
+#Initialize Statistics object
+myStats = SupplyChainStatistics()
+
 """
 -------------------------------------------------------
 Main game-play!
@@ -78,10 +82,22 @@ Main game-play!
 for thisWeek in range(0, WEEKS_TO_PLAY):
     
     print("--- Week {0} ---".format(thisWeek))
+    
+    #Retailer takes turn, update stats
     myRetailer.TakeTurn(thisWeek)
+    myStats.RecordRetailerCost(myRetailer.GetCostIncurred())
+    
+    #Wholesaler takes turn, update stats
     myWholesaler.TakeTurn(thisWeek)
+    myStats.RecordWholesalerCost(myWholesaler.GetCostIncurred())
+    
+    #Distributor takes turn, update stats
     myDistributor.TakeTurn(thisWeek)
+    myStats.RecordDistributorCost(myDistributor.GetCostIncurred())
+    
+    #Factory takes turn, update stats
     myFactory.TakeTurn(thisWeek)
+    myStats.RecordFactoryCost(myFactory.GetCostIncurred())
 
 print("--- Final Statistics ----")
 print("Beer received by customer: {0}".format(theCustomer.GetBeerReceived()))
@@ -89,5 +105,5 @@ print("Retailer cost: {0}".format(myRetailer.GetCostIncurred()))
 print("Wholesaler cost: {0}".format(myWholesaler.GetCostIncurred()))
 print("Distributor cost: {0}".format(myDistributor.GetCostIncurred()))
 print("Factory cost: {0}".format(myFactory.GetCostIncurred()))
-
+myStats.PlotCosts()
 
