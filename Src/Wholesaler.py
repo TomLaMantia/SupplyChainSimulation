@@ -21,8 +21,7 @@ class Wholesaler(SupplyChainActor):
                 the supply chain queues.
         Postconditions:
             Initializes the Wholesaler object in its initial state
-            by calling parent constructor and setting the
-            retailer's customer.
+            by calling parent constructor.
         -------------------------------------------------------
         """
         super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)

@@ -8,6 +8,7 @@ Version: February 7th 2016
 -------------------------------------------------------
 """
 
+from Settings import *
 from SupplyChainActor import SupplyChainActor
 from SupplyChainQueue import SupplyChainQueue
 
@@ -28,6 +29,10 @@ class Factory(SupplyChainActor):
         """
         super().__init__(incomingOrdersQueue, outgoingOrdersQueue, incomingDeliveriesQueue, outgoingDeliveriesQueue)
         self.BeerProductionDelayQueue = SupplyChainQueue()
+        
+        #We assume that the factory already has some runs in production. This is in the rules, and ensures initial stability.
+        self.BeerProductionDelayQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
+        self.BeerProductionDelayQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
         return
     
     def ProduceBeer(self):

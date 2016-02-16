@@ -13,29 +13,63 @@ Version: February 14th 2016
 -------------------------------------------------------
 """
 
+from Settings import *
 from SupplyChainQueue import SupplyChainQueue
 from Retailer import Retailer
+from Wholesaler import Wholesaler
+from Distributor import Distributor
+from Factory import Factory
 
-q1 = SupplyChainQueue()
-q2 = SupplyChainQueue()
-q3 = SupplyChainQueue()
-q4 = SupplyChainQueue()
-myRetailer = Retailer(q1, q2, q3, q4)
-  
-# q = SupplyChainQueue(5)
-# for i in range(0,5):
-#     q.PushOrder(i)
-#     q.PrettyPrint()
-# 
-# print("----")
-# for i in range(0,5):
-#     print(q.TakeDelivery())
-#     q.PrettyPrint()
-# 
-# print("----")
-# for i in range(5,10):
-#     q.PushOrder(i)
-#     q.PrettyPrint()
+"""
+-------------------------------------------------------
+Given two SupplyChainActors B <--> A, where
+A is higher in the supply chain, let "top queue" denote A's
+outgoingOrderQueue/B's incomingOrderQueue. Let "bottom queue"
+denote B's outgoingDeliveryQueue/A's incoming delivery queue. 
+-------------------------------------------------------
+"""
+wholesalerRetailerTopQueue = SupplyChainQueue()
+wholesalerRetailerBottomQueue = SupplyChainQueue()
+
+distributorWholesalerTopQueue = SupplyChainQueue()
+distributorWholesalerBottomQueue = SupplyChainQueue()
+
+factoryDistributorTopQueue = SupplyChainQueue()
+factoryDistributorBottomQueue = SupplyChainQueue()
+
+"""
+-------------------------------------------------------
+Each queue should have at least 2 orders of size CUSTOMER_INITIAL_ORDER 
+-------------------------------------------------------
+"""
+for i in range(0,2):
+    wholesalerRetailerTopQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
+    wholesalerRetailerBottomQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
+    distributorWholesalerTopQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
+    distributorWholesalerBottomQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
+    factoryDistributorTopQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
+    factoryDistributorBottomQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
+
+"""
+-------------------------------------------------------
+Now we initialize our SupplyChainObjects. Passing the correct
+queues is essential.
+-------------------------------------------------------
+"""
+
+myRetailer = Retailer(None, wholesalerRetailerTopQueue, wholesalerRetailerBottomQueue, None)
+
+myWholesaler = Wholesaler(wholesalerRetailerTopQueue, distributorWholesalerTopQueue,
+                          distributorWholesalerBottomQueue, wholesalerRetailerBottomQueue)
+
+myDistributor = Distributor(distributorWholesalerTopQueue, factoryDistributorTopQueue,
+                            factoryDistributorBottomQueue, distributorWholesalerBottomQueue)
+
+myFactory = Factory(factoryDistributorTopQueue, None, None, factoryDistributorBottomQueue)
+
+
+
+
 
 
 
