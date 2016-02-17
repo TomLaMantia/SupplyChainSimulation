@@ -39,7 +39,8 @@ class SupplyChainActor:
         self.incomingDeliveriesQueue = incomingDeliveriesQueue
         self.outgoingDeliveriesQueue = outgoingDeliveriesQueue
         
-        self.totalOrders = 0
+        self.lastOrderQuantity = 0
+        
         return
     
     def PlaceOutgoingDelivery(self, amountToDeliver):
@@ -61,20 +62,50 @@ class SupplyChainActor:
     def PlaceOutgoingOrder(self):
         """
         -------------------------------------------------------
-        Places an order to the actor one level lower in the supply
-        chain. This needs to be determined by an appropriate helper function!
+        Calculates the size of the weekly outgoing order.
         -------------------------------------------------------
-        Preconditions: 
-            None
+        Preconditions: None.
         Postconditions:
-            Places the order. Note: the advancement
-            of the queues is handled by the main program.
+            Calculates the order quantity using an anchor and maintain
+            strategy.
         -------------------------------------------------------
         """
-        #This is a temp value of 5!!!!!!!! Will choose dynamically later!
-        self.outgoingOrdersQueue.PushEnvelope(8)
-        self.totalOrders += 8
+        #We want to cover any backorders, if they exist
+        maintain = 0
+        if self.currentOrders > 0:
+            maintain = self.currentOrders
+        
+        anchor = 0
+        targetInventory = TARGET_STOCK - self.currentStock
+        if targetInventory > 0:
+            anchor = targetInventory
+        
+        amountToOrder = maintain + anchor
+        self.outgoingOrdersQueue.PushEnvelope(amountToOrder)
+        
+        self.lastOrderQuantity = amountToOrder
+        
         return
+    
+#     def PlaceOutgoingOrder(self):
+#         """
+#         -------------------------------------------------------
+#         Places an order to the actor one level lower in the supply
+#         chain. This needs to be determined by an appropriate helper function!
+#         
+#         We want to implement an anchoring and adjustment heuristic.
+#         -------------------------------------------------------
+#         Preconditions: 
+#             None
+#         Postconditions:
+#             Places the order. Note: the advancement
+#             of the queues is handled by the main program.
+#         -------------------------------------------------------
+#         """
+#         #This is a temp value of 5!!!!!!!! Will choose dynamically later!
+#         self.outgoingOrdersQueue.PushEnvelope(8)
+#         self.totalOrders += 8
+#         return
     
     def ReceiveIncomingDelivery(self):
         """
@@ -178,13 +209,13 @@ class SupplyChainActor:
         """
         return self.costsIncurred
     
-    def GetTotalOrders(self):
+    def GetLastOrderQuantity(self):
         """
         -------------------------------------------------------
-        Returns the total orders made. 
+        Returns the quantity of the last order made. 
         -------------------------------------------------------
         Preconditions: None.
-        Postconditions: Returns self.totalOrders
+        Postconditions: Returns self.lastOrderQuantity
         -------------------------------------------------------
         """
-        return self.totalOrders
+        return self.lastOrderQuantity

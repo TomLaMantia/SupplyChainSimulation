@@ -37,9 +37,31 @@ class Factory(SupplyChainActor):
         return
     
     def ProduceBeer(self):
-        amountOfBeerToProduce = 8
-        self.BeerProductionDelayQueue.PushEnvelope(amountOfBeerToProduce)
-        self.totalOrders += 8
+        """
+        -------------------------------------------------------
+        Calculates the size of this week's production run.
+        -------------------------------------------------------
+        Preconditions: None.
+        Postconditions:
+            Calculates the production run using an anchor and maintain
+            strategy.
+        -------------------------------------------------------
+        """
+        #We want to cover any backorders, if they exist
+        maintain = 0
+        if self.currentOrders > 0:
+            maintain = self.currentOrders
+        
+        anchor = 0
+        targetInventory = TARGET_STOCK - self.currentStock
+        if targetInventory > 0:
+            anchor = targetInventory
+        
+        amountToProduce = maintain + anchor
+        self.BeerProductionDelayQueue.PushEnvelope(amountToProduce)
+        
+        self.lastOrderQuantity = amountToProduce
+        
         return
     
     def FinishProduction(self):
@@ -55,7 +77,7 @@ class Factory(SupplyChainActor):
         
         #The steps for taking a turn are as follows:
         
-        #SOME PREVIOUS PRODUCTION RUNS FINISH BREWING.
+        #PREVIOUS PRODUCTION RUNS FINISH BREWING.
         self.FinishProduction()
         
         #RECEIVE NEW ORDER FROM DISTRIBUTOR
