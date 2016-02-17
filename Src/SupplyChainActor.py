@@ -87,26 +87,6 @@ class SupplyChainActor:
         
         return
     
-#     def PlaceOutgoingOrder(self):
-#         """
-#         -------------------------------------------------------
-#         Places an order to the actor one level lower in the supply
-#         chain. This needs to be determined by an appropriate helper function!
-#         
-#         We want to implement an anchoring and adjustment heuristic.
-#         -------------------------------------------------------
-#         Preconditions: 
-#             None
-#         Postconditions:
-#             Places the order. Note: the advancement
-#             of the queues is handled by the main program.
-#         -------------------------------------------------------
-#         """
-#         #This is a temp value of 5!!!!!!!! Will choose dynamically later!
-#         self.outgoingOrdersQueue.PushEnvelope(8)
-#         self.totalOrders += 8
-#         return
-    
     def ReceiveIncomingDelivery(self):
         """
         -------------------------------------------------------

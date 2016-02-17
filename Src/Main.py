@@ -87,25 +87,32 @@ for thisWeek in range(0, WEEKS_TO_PLAY):
     myRetailer.TakeTurn(thisWeek)
     myStats.RecordRetailerCost(myRetailer.GetCostIncurred())
     myStats.RecordRetailerOrders(myRetailer.GetLastOrderQuantity())
+    print("Retailer Complete")
     
     #Wholesaler takes turn, update stats
     myWholesaler.TakeTurn(thisWeek)
     myStats.RecordWholesalerCost(myWholesaler.GetCostIncurred())
     myStats.RecordWholesalerOrders(myWholesaler.GetLastOrderQuantity())
+    print("Wholesaler Complete")
     
     #Distributor takes turn, update stats
     myDistributor.TakeTurn(thisWeek)
     myStats.RecordDistributorCost(myDistributor.GetCostIncurred())
     myStats.RecordDistributorOrders(myDistributor.GetLastOrderQuantity())
+    print("Distributor Complete")
     
     #Factory takes turn, update stats
     myFactory.TakeTurn(thisWeek)
     myStats.RecordFactoryCost(myFactory.GetCostIncurred())
     myStats.RecordFactoryOrders(myFactory.GetLastOrderQuantity())
+    print(myFactory.CalcCostForTurn())
+    print("Factory Complete")
 
 print("--- Final Statistics ----")
 print("Beer received by customer: {0}".format(theCustomer.GetBeerReceived()))
 myStats.PlotCosts()
 myStats.PlotOrders()
 print(myRetailer.GetCostIncurred())
-
+print(myWholesaler.GetCostIncurred())
+print(myDistributor.GetCostIncurred())
+print(myFactory.GetCostIncurred())

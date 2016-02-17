@@ -169,7 +169,7 @@ class SupplyChainStatistics:
         plt.plot(self.wholesalerOrdersOverTime, "g", label = "Wholesaler")
         plt.plot(self.distributorOrdersOverTime, "b", label = "Distributor")
         plt.plot(self.factoryOrdersOverTime, "m", label="Factory")
-        legend = plt.legend(loc='upper center', shadow=True)
+        legend = plt.legend(loc='upper right', shadow=True)
         plt.ylabel('Orders')
         plt.xlabel("Weeks")
         plt.show()

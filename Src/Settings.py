@@ -17,11 +17,11 @@ STORAGE_COST_PER_UNIT = 0.5
 BACKORDER_PENALTY_COST_PER_UNIT = 1
 
 #We can play the full game since no actor is programmed to dump stock near end of game
-WEEKS_TO_PLAY = 500
+WEEKS_TO_PLAY = 36
 
 QUEUE_DELAY_WEEKS = 2
 
-INITIAL_STOCK = 8
+INITIAL_STOCK = 12
 
 INITIAL_COST = 0
 

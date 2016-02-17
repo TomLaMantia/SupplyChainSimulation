@@ -23,8 +23,6 @@ class Customer:
         -------------------------------------------------------
         """
         self.totalBeerReceived = 0
-        self.orderType1 = CUSTOMER_INITIAL_ORDERS
-        self.orderType2 = CUSTOMER_SUBSEQUENT_ORDERS
         return
     
     def RecieveFromRetailer(self, amountReceived):
@@ -54,9 +52,9 @@ class Customer:
         -------------------------------------------------------
         """
         if weekNum <= 5:
-            result = self.orderType1
+            result = CUSTOMER_INITIAL_ORDERS
         else:
-            result = self.orderType2
+            result = CUSTOMER_SUBSEQUENT_ORDERS
         return result
     
     def GetBeerReceived(self):
