@@ -199,3 +199,16 @@ class SupplyChainActor:
         -------------------------------------------------------
         """
         return self.lastOrderQuantity
+    
+    def CalcEffectiveInventory(self):
+        """
+        -------------------------------------------------------
+        Returns the effective inventory of the calling SupplyChainActor
+        during the week the method is called.
+        -------------------------------------------------------
+        Preconditions: None.
+        Postconditions: Returns the effective inventory, which
+            is defined as self.currentStock - self.currentOrders.
+        -------------------------------------------------------
+        """
+        return (self.currentStock - self.currentOrders)

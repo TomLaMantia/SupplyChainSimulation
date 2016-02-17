@@ -26,6 +26,12 @@ class SupplyChainStatistics:
         self.distributorOrdersOverTime = []
         self.factoryOrdersOverTime = []
         
+        #Effective inventory statistics
+        self.retailerEffectiveInventoryOverTime = []
+        self.wholesalerEffectiveInventoryOverTime = []
+        self.distributorEffectiveInventoryOverTime = []
+        self.factoryEffectiveInventoryOverTime = []
+        
         return
     
     def RecordRetailerOrders(self, retailerOrdersThisWeek):
@@ -148,9 +154,69 @@ class SupplyChainStatistics:
         self.factoryCostsOverTime.append(factoryCostsThisWeek)
         return
     
+    def RecordRetailerEffectiveInventory(self, retailerEffectiveInventoryThisWeek):
+        """
+        -------------------------------------------------------
+        Adds weekly effective inventory to the wholesaler's record.
+        -------------------------------------------------------
+        Preconditions: retailerEffectiveInventoryThisWeek - effective
+            inventory of the retailer during the given week.
+        Postconditions: retailerEffectiveInventoryThisWeek is appended to 
+            retailerEffectiveInventoryOverTime, a list which tracks the retailer's
+            effective inventory.
+        -------------------------------------------------------
+        """
+        self.retailerEffectiveInventoryOverTime.append(retailerEffectiveInventoryThisWeek)
+        return
+    
+    def RecordWholesalerEffectiveInventory(self, wholesalerEffectiveInventoryThisWeek):
+        """
+        -------------------------------------------------------
+        Adds weekly effective inventory to the wholesaler's record.
+        -------------------------------------------------------
+        Preconditions: wholesalerEffectiveInventoryThisWeek - effective
+            inventory of the wholesaler during the given week.
+        Postconditions: wholesalerEffectiveInventoryThisWeek is appended to 
+            wholesalerEffectiveInventoryOverTime, a list which tracks the wholesalers's
+            effective inventory.
+        -------------------------------------------------------
+        """
+        self.wholesalerEffectiveInventoryOverTime.append(wholesalerEffectiveInventoryThisWeek)
+        return
+    
+    def RecordDistributorEffectiveInventory(self, distributorEffectiveInventoryThisWeek):
+        """
+        -------------------------------------------------------
+        Adds weekly effective inventory to the distributor's record.
+        -------------------------------------------------------
+        Preconditions: distributorEffectiveInventoryThisWeek - effective
+            inventory of the distributor during the given week.
+        Postconditions: distributorEffectiveInventoryThisWeek is appended to 
+            distributorEffectiveInventoryOverTime, a list which tracks the distributor's
+            effective inventory.
+        -------------------------------------------------------
+        """
+        self.distributorEffectiveInventoryOverTime.append(distributorEffectiveInventoryThisWeek)
+        return
+    
+    def RecordFactoryEffectiveInventory(self, factoryEffectiveInventoryThisWeek):
+        """
+        -------------------------------------------------------
+        Adds weekly effective inventory to the factory's record.
+        -------------------------------------------------------
+        Preconditions: factoryEffectiveInventoryThisWeek - effective
+            inventory of the factory during the given week.
+        Postconditions: distributorEffectiveInventoryThisWeek is appended to 
+            factoryEffectiveInventoryOverTime, a list which tracks the factory's
+            effective inventory.
+        -------------------------------------------------------
+        """
+        self.factoryEffectiveInventoryOverTime.append(factoryEffectiveInventoryThisWeek)
+        return
+    
     def PlotCosts(self):
         
-        plt.title("Cost Incurred")
+        plt.title("Cost Incurred Over Time")
         plt.plot(self.retailerCostsOverTime, "r", label = "Retailer")
         plt.plot(self.wholesalerCostsOverTime, "g", label = "Wholesaler")
         plt.plot(self.distributorCostsOverTime, "b", label = "Distributor")
@@ -164,13 +230,27 @@ class SupplyChainStatistics:
     
     def PlotOrders(self):
             
-        plt.title("Orders Placed")
+        plt.title("Orders Placed Over Time")
         plt.plot(self.retailerOrdersOverTime, "r", label = "Retailer")
         plt.plot(self.wholesalerOrdersOverTime, "g", label = "Wholesaler")
         plt.plot(self.distributorOrdersOverTime, "b", label = "Distributor")
         plt.plot(self.factoryOrdersOverTime, "m", label="Factory")
         legend = plt.legend(loc='upper right', shadow=True)
         plt.ylabel('Orders')
+        plt.xlabel("Weeks")
+        plt.show()
+        
+        return
+    
+    def PlotEffectiveInventory(self):
+        
+        plt.title("Effective Inventory Over Time")
+        plt.plot(self.retailerEffectiveInventoryOverTime, "r", label = "Retailer")
+        plt.plot(self.wholesalerEffectiveInventoryOverTime, "g", label = "Wholesaler")
+        plt.plot(self.distributorEffectiveInventoryOverTime, "b", label = "Distributor")
+        plt.plot(self.factoryEffectiveInventoryOverTime, "m", label="Factory")
+        legend = plt.legend(loc='upper right', shadow=True)
+        plt.ylabel('Effective Inventory')
         plt.xlabel("Weeks")
         plt.show()
         
