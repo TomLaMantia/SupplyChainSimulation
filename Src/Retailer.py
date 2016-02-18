@@ -72,10 +72,14 @@ class Retailer(SupplyChainActor):
         self.ReceiveIncomingOrderFromCustomer(weekNum)
         
         #CALCULATE AMOUNT TO BE SHIPPED, THEN SHIP IT
-        self.ShipOutgoingDeliveryToCustomer()
+        #self.ShipOutgoingDeliveryToCustomer()
+        if weekNum <= 4:
+            self.customer.RecieveFromRetailer(4)
+        else:
+            self.customer.RecieveFromRetailer(self.CalcBeerToDeliver())
         
         #PLACE ORDER TO WHOLESALER
-        self.PlaceOutgoingOrder()
+        self.PlaceOutgoingOrder(weekNum)
         
         #UPDATE COSTS
         self.costsIncurred += self.CalcCostForTurn()

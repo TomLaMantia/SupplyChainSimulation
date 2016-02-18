@@ -36,36 +36,43 @@ class Factory(SupplyChainActor):
         self.BeerProductionDelayQueue.PushEnvelope(CUSTOMER_INITIAL_ORDERS)
         return
     
-    def ProduceBeer(self):
+    def ProduceBeer(self, weekNum):
         """
         -------------------------------------------------------
         Calculates the size of this week's production run.
         -------------------------------------------------------
-        Preconditions: None.
+        Preconditions:  weekNum - the current week number.
         Postconditions:
             Calculates the production run using an anchor and maintain
             strategy.
         -------------------------------------------------------
         """
-        #We want to cover any backorders, if they exist
-        maintain = 0
-        if self.currentOrders > 0:
-            maintain = self.currentOrders
-        
-        anchor = 0
-        targetInventory = TARGET_STOCK - self.currentStock
-        if targetInventory > 0:
-            anchor = targetInventory
-        
-        amountToProduce = maintain + anchor
-        self.BeerProductionDelayQueue.PushEnvelope(amountToProduce)
-        
-        self.lastOrderQuantity = amountToProduce
+        if weekNum <= 4:
+            amountToOrder = 4
+        #After first few weeks, the actor chooses the order. We use "anchor and maintain" strategy.
+        else:
+            #We want to cover any outflows
+            amountToOrder = 0.5 * self.currentOrders
+            
+            if (TARGET_STOCK - self.currentStock) > 0:
+                amountToOrder += TARGET_STOCK - self.currentStock
+            
+        self.BeerProductionDelayQueue.PushEnvelope(amountToOrder)
+        self.lastOrderQuantity = amountToOrder
         
         return
     
     def FinishProduction(self):
-        
+        """
+        -------------------------------------------------------
+        Finishes production by popping the production queue and
+        adding this beer to the current stock of the factory.
+        -------------------------------------------------------
+        Preconditions:  None
+        Postconditions: Updates currentStock to reflect the beer
+            that the factory just brewed.
+        -------------------------------------------------------
+        """
         amountProduced = self.BeerProductionDelayQueue.PopEnvelope()
         
         if amountProduced > 0:
@@ -84,10 +91,13 @@ class Factory(SupplyChainActor):
         self.ReceiveIncomingOrders()     #This also advances the queue!
         
         #PREPARE DELIVERY
-        self.PlaceOutgoingDelivery(self.CalcBeerToDeliver())
+        if weekNum <= 4:
+            self.PlaceOutgoingDelivery(4)
+        else:
+            self.PlaceOutgoingDelivery(self.CalcBeerToDeliver())
         
         #PRODUCE BEER
-        self.ProduceBeer()
+        self.ProduceBeer(weekNum)
         
         #UPDATE COSTS
         self.costsIncurred += self.CalcCostForTurn()

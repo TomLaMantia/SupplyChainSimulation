@@ -59,30 +59,30 @@ class SupplyChainActor:
         self.outgoingDeliveriesQueue.PushEnvelope(amountToDeliver)
         return
     
-    def PlaceOutgoingOrder(self):
+    def PlaceOutgoingOrder(self, weekNum):
         """
         -------------------------------------------------------
         Calculates the size of the weekly outgoing order.
         -------------------------------------------------------
-        Preconditions: None.
+        Preconditions: weekNum - the current week number.
         Postconditions:
             Calculates the order quantity using an anchor and maintain
             strategy.
         -------------------------------------------------------
         """
-        #We want to cover any backorders, if they exist
-        maintain = 0
-        if self.currentOrders > 0:
-            maintain = self.currentOrders
-        
-        anchor = 0
-        targetInventory = TARGET_STOCK - self.currentStock
-        if targetInventory > 0:
-            anchor = targetInventory
-        
-        amountToOrder = maintain + anchor
+
+        #First weeks are in equilibrium
+        if weekNum <= 4:
+            amountToOrder = 4
+        #After first few weeks, the actor chooses the order. We use "anchor and maintain" strategy.
+        else:
+            #We want to cover any out flows, we know that there are some orders in the pipeline.
+            amountToOrder = 0.5 * self.currentOrders
+            
+            if (TARGET_STOCK - self.currentStock) > 0:
+                amountToOrder += TARGET_STOCK - self.currentStock
+            
         self.outgoingOrdersQueue.PushEnvelope(amountToOrder)
-        
         self.lastOrderQuantity = amountToOrder
         
         return
