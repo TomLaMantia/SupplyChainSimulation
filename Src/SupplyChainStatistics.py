@@ -215,7 +215,14 @@ class SupplyChainStatistics:
         return
     
     def PlotCosts(self):
-        
+        """
+        -------------------------------------------------------
+        Graphs the costs of each supply chain actor.
+        -------------------------------------------------------
+        Preconditions: None
+        Postconditions: Outputs MatplotLib chart.
+        -------------------------------------------------------
+        """
         plt.title("Cost Incurred Over Time")
         plt.plot(self.retailerCostsOverTime, "r", label = "Retailer")
         plt.plot(self.wholesalerCostsOverTime, "g", label = "Wholesaler")
@@ -229,13 +236,20 @@ class SupplyChainStatistics:
         return
     
     def PlotOrders(self):
-            
+        """
+        -------------------------------------------------------
+        Graphs the orders of each supply chain actor.
+        -------------------------------------------------------
+        Preconditions: None
+        Postconditions: Outputs MatplotLib chart.
+        -------------------------------------------------------
+        """
         plt.title("Orders Placed Over Time")
         plt.plot(self.retailerOrdersOverTime, "r", label = "Retailer")
         plt.plot(self.wholesalerOrdersOverTime, "g", label = "Wholesaler")
         plt.plot(self.distributorOrdersOverTime, "b", label = "Distributor")
         plt.plot(self.factoryOrdersOverTime, "m", label="Factory")
-        legend = plt.legend(loc='upper right', shadow=True)
+        legend = plt.legend(loc='upper left', shadow=True)
         plt.ylabel('Orders')
         plt.xlabel("Weeks")
         plt.show()
@@ -243,13 +257,20 @@ class SupplyChainStatistics:
         return
     
     def PlotEffectiveInventory(self):
-        
+        """
+        -------------------------------------------------------
+        Graphs the effective inventory of each supply chain actor.
+        -------------------------------------------------------
+        Preconditions: None
+        Postconditions: Outputs MatplotLib chart.
+        -------------------------------------------------------
+        """
         plt.title("Effective Inventory Over Time")
         plt.plot(self.retailerEffectiveInventoryOverTime, "r", label = "Retailer")
         plt.plot(self.wholesalerEffectiveInventoryOverTime, "g", label = "Wholesaler")
         plt.plot(self.distributorEffectiveInventoryOverTime, "b", label = "Distributor")
         plt.plot(self.factoryEffectiveInventoryOverTime, "m", label="Factory")
-        legend = plt.legend(loc='upper right', shadow=True)
+        legend = plt.legend(loc='upper left', shadow=True)
         plt.ylabel('Effective Inventory')
         plt.xlabel("Weeks")
         plt.show()

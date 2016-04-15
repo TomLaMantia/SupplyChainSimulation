@@ -31,7 +31,7 @@ denote B's outgoingDeliveryQueue/A's incoming delivery queue.
 -------------------------------------------------------
 """
 wholesalerRetailerTopQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
-wholesalerRetailerBottomQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
+wholesalerRetailerBottomQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS1)
 
 distributorWholesalerTopQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
 distributorWholesalerBottomQueue = SupplyChainQueue(QUEUE_DELAY_WEEKS)
