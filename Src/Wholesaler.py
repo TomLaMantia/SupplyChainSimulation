@@ -38,10 +38,7 @@ class Wholesaler(SupplyChainActor):
         self.ReceiveIncomingOrders()     #This also advances the queue!
         
         #PREPARE DELIVERY
-        if weekNum <= 4:
-            self.PlaceOutgoingDelivery(4)
-        else:
-            self.PlaceOutgoingDelivery(self.CalcBeerToDeliver())
+        self.PlaceOutgoingDelivery(self.CalcBeerToDeliver())
         
         #PLACE ORDER
         self.PlaceOutgoingOrder(weekNum)
